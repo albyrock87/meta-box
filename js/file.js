@@ -1,9 +1,8 @@
 jQuery( document ).ready( function( $ )
 {
 	// Add more file
-	$( '.rwmb-add-file' ).each( function()
-	{
-		var $this = $( this ),
+	$( 'body' ).on( 'click', '.rwmb-add-file', function(e) {
+		var $this = $( e.target ),
 			$uploads = $this.siblings( '.file-input' ),
 			$first = $uploads.first(),
 			uploadCount = $uploads.length,
@@ -20,27 +19,26 @@ jQuery( document ).ready( function( $ )
 				$uploads.hide();
 		}
 
-		$this.click( function()
+		// Clone upload input only when needed
+		if ( maxFileUploads <= 0 || uploadCount + fileCount < maxFileUploads )
 		{
-			// Clone upload input only when needed
-			if ( maxFileUploads <= 0 || uploadCount + fileCount < maxFileUploads )
-			{
-				$first.clone().insertBefore( $this );
-				uploadCount++;
+			$first.clone().insertBefore( $this );
+			uploadCount++;
 
-				// If there're too many upload inputs, hide "Add New File"
-				if ( maxFileUploads > 0 && uploadCount + fileCount >= maxFileUploads  )
-					$this.hide();
-			}
+			// If there're too many upload inputs, hide "Add New File"
+			if ( maxFileUploads > 0 && uploadCount + fileCount >= maxFileUploads  )
+				$this.hide();
+		}
 
-			return false;
-		} );
-	} );
+		return false;
+
+
+	};
 
 	// Delete file via Ajax
-	$( '.rwmb-uploaded' ).on( 'click', '.rwmb-delete-file', function()
+	$( 'body' ).on( 'click', '.rwmb-uploaded .rwmb-delete-file', function(e)
 	{
-		var $this = $( this ),
+		var $this = $( e.target ),
 			$parent = $this.parents( 'li' ),
 			$container = $this.closest( '.rwmb-uploaded' ),
 			data = {
@@ -85,11 +83,6 @@ jQuery( document ).ready( function( $ )
 
 		return false;
 	} );
-
-	//Remove deleted file
-	$( '.rwmb-uploaded' ).on( 'transitionend webkitTransitionEnd otransitionend', 'li.removed', function() {
-		$( this ).remove();
-	});
 
 	$( 'body' ).on( 'update.rwmbFile', '.rwmb-uploaded', function()
 	{
