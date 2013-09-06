@@ -31,9 +31,7 @@ jQuery( document ).ready( function( $ )
 		}
 
 		return false;
-
-
-	};
+	} );
 
 	// Delete file via Ajax
 	$( 'body' ).on( 'click', '.rwmb-uploaded .rwmb-delete-file', function(e)
